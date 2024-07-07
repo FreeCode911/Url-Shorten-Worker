@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
+  <title>Shorter URL</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    .card {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #ff4b2b, #ff416c);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 30px;
+      text-align: center;
+    }
+
+    .card-title {
+      margin-bottom: 20px;
+      font-size: 1.2em;
+      color: #555;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-control {
+      border-radius: 50px 0 0 50px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: 1px solid #ddd;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #ff4b2b;
+      box-shadow: 0 0 5px rgba(255, 75, 43, 0.5);
+    }
+
+    .input-group-append .btn {
+      background-color: #ff4b2b;
+      color: white;
+      border-radius: 0 50px 50px 0;
+      border: 1px solid #ff4b2b;
+      padding: 10px 20px;
+      font-size: 1em;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .input-group-append .btn:hover {
+      background-color: #ff416c;
+      transform: translateY(-2px);
+    }
+
+    .card-text a {
+      color: #ff4b2b;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .card-text a:hover {
+      color: #ff416c;
+    }
+
+    .modal-header {
+      background-color: #ff4b2b;
+      color: white;
+    }
+
+    .modal-footer .btn-primary {
+      background-color: #ff4b2b;
+      border: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .modal-footer .btn-primary:hover {
+      background-color: #ff416c;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        width: 90%;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+      .card {
+        background-color: #1e1e1e;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      }
+      .card-header {
+        background: linear-gradient(135deg, #440074, #6b00b6);
+      }
+      .input-group-append .btn {
+        background-color: #440074;
+        border: 1px solid #440074;
+      }
+      .input-group-append .btn:hover {
+        background-color: #6b00b6;
+      }
+      .modal-header {
+        background-color: #440074;
+      }
+      .modal-footer .btn-primary {
+        background-color: #440074;
+      }
+      .modal-footer .btn-primary:hover {
+        background-color: #6b00b6;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h5 class="card-header">🎁 Shorten your URLs!</h5>
+    <div class="card-body">
+      <h5 class="card-title">Please enter the long URL to be shortened:</h5>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Example: https://example.com/" id="text">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
+        </div>
+      </div>
+      <div class="card-text">
+        <a href="https://YouTube.com/c/legendyt4k/" target="_self">YouTube</a>
+      </div>
+      <p id="notice"></p>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Result</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="result">No result</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick='copyurl("result")' data-toggle="popover" data-placement="bottom" data-content="Copied!">Copy</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://gcore.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/url-shorten-worker@1.0.7/main.js" crossorigin="anonymous"></script>
+</body>
+</html>
